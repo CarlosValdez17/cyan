@@ -54,8 +54,7 @@ public class ventanaGranFormato extends javax.swing.JFrame {
             double medidas = Double.parseDouble(txtMedidas.getText());
             double importe = (medidas * Double.parseDouble(precio)) * cantidad;
             txtImporte.setText(df.format(importe) + "");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
         }
     }
 
@@ -105,6 +104,7 @@ public class ventanaGranFormato extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtPrecioUnitario = new javax.swing.JTextField();
+        labelComision = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -144,12 +144,14 @@ public class ventanaGranFormato extends javax.swing.JFrame {
             }
         });
         jScrollPane4.setViewportView(tablaArticulos);
-        tablaArticulos.getColumnModel().getColumn(0).setMinWidth(35);
-        tablaArticulos.getColumnModel().getColumn(0).setPreferredWidth(35);
-        tablaArticulos.getColumnModel().getColumn(0).setMaxWidth(35);
-        tablaArticulos.getColumnModel().getColumn(1).setMinWidth(100);
-        tablaArticulos.getColumnModel().getColumn(1).setPreferredWidth(100);
-        tablaArticulos.getColumnModel().getColumn(1).setMaxWidth(100);
+        if (tablaArticulos.getColumnModel().getColumnCount() > 0) {
+            tablaArticulos.getColumnModel().getColumn(0).setMinWidth(35);
+            tablaArticulos.getColumnModel().getColumn(0).setPreferredWidth(35);
+            tablaArticulos.getColumnModel().getColumn(0).setMaxWidth(35);
+            tablaArticulos.getColumnModel().getColumn(1).setMinWidth(100);
+            tablaArticulos.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tablaArticulos.getColumnModel().getColumn(1).setMaxWidth(100);
+        }
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -181,7 +183,7 @@ public class ventanaGranFormato extends javax.swing.JFrame {
 
         getContentPane().add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 70, 480, 408));
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Registro", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.white));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Registro", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), java.awt.Color.white)); // NOI18N
         jPanel3.setOpaque(false);
 
         jLabel8.setBackground(new java.awt.Color(255, 255, 255));
@@ -293,6 +295,8 @@ public class ventanaGranFormato extends javax.swing.JFrame {
 
         txtPrecioUnitario.setEditable(false);
 
+        labelComision.setText("-");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -305,7 +309,10 @@ public class ventanaGranFormato extends javax.swing.JFrame {
                     .addComponent(txtNombre)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(labelComision))
                             .addComponent(jLabel15))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2))
@@ -395,7 +402,9 @@ public class ventanaGranFormato extends javax.swing.JFrame {
                     .addComponent(txtPrecioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(22, 22, 22)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton2)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton2)
+                        .addComponent(labelComision))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -429,8 +438,7 @@ public class ventanaGranFormato extends javax.swing.JFrame {
 
             if (txtMedidas.getText().equals("")) {
                 //txtCantidad.setText("1");
-            }
-            else {
+            } else {
                 importe = (medidas * prec) * cantidad;
                 txtImporte.setText(df.format(importe) + "");
                 calcularPrecioU();
@@ -443,18 +451,18 @@ public class ventanaGranFormato extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (existencias.equals("0") || existencias.equals("0.0")) {
             JOptionPane.showMessageDialog(this, "Producto con 0 existencias");
-        }
-        else {
+        } else {
             if (panel.equals("VENTA")) {
                 ventas.agregarArticulo(txtCodigo.getText(), txtNombre.getText() + "(" + txtBase.getText() + "*" + txtAltura.getText() + ")=" + txtMedidas.getText(),
-                        txtMedidas.getText(), txtCantidad.getText(), 
-                        df.format((Double.parseDouble(txtPrecioUnitario.getText()))), df.format((Double.parseDouble(txtImporte.getText()))) );
-                        //ventas.desglozarImpuestosVenta();
-            }
-            else {
+                        txtMedidas.getText(), txtCantidad.getText(),
+                        df.format((Double.parseDouble(txtPrecioUnitario.getText()))),
+                        df.format((Double.parseDouble(txtImporte.getText()))), labelComision.getText());
+                //ventas.desglozarImpuestosVenta();
+            } else {
                 ventas.agregarArticuloCotizacion(txtCodigo.getText(), txtNombre.getText() + "(" + txtBase.getText() + "*" + txtAltura.getText() + ")=" + txtMedidas.getText(),
-                        txtMedidas.getText(), txtCantidad.getText(), df.format((Double.parseDouble(txtPrecioUnitario.getText()))), df.format((Double.parseDouble(txtImporte.getText()))) );
-                        //ventas.desglozarImpuestosCoti();
+                        txtMedidas.getText(), txtCantidad.getText(), df.format((Double.parseDouble(txtPrecioUnitario.getText()))),
+                        df.format((Double.parseDouble(txtImporte.getText()))), labelComision.getText());
+                //ventas.desglozarImpuestosCoti();
             }
         }
 
@@ -462,8 +470,8 @@ public class ventanaGranFormato extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "¡Advertencia!\nArticulo por agotar.");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
-    
-    String existencias = "";
+
+    String existencias = "", comisionNeta = "";
     private void tablaArticulosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaArticulosMouseClicked
         // TODO add your handling code here:
         DefaultTableModel modelo = (DefaultTableModel) tablaArticulos.getModel();
@@ -476,10 +484,13 @@ public class ventanaGranFormato extends javax.swing.JFrame {
         if (radioPublicoG.isSelected()) {
             txtPrec.setText(modelo.getValueAt(tablaArticulos.getSelectedRow(), 4) + "");
             precio = modelo.getValueAt(tablaArticulos.getSelectedRow(), 4) + "";
-        }
-        else {
+            comisionNeta = u.devuelveUnDato("select comisiong from productos where id =" + txtCodigo.getText());
+            labelComision.setText(comisionNeta);
+        } else {
             txtPrec.setText(modelo.getValueAt(tablaArticulos.getSelectedRow(), 5) + "");
             precio = modelo.getValueAt(tablaArticulos.getSelectedRow(), 5) + "";
+            comisionNeta = u.devuelveUnDato("select comisiong from productos where id =" + txtCodigo.getText());
+            labelComision.setText(comisionNeta);
         }
 
         calcular();
@@ -493,16 +504,17 @@ public class ventanaGranFormato extends javax.swing.JFrame {
             double prec = Double.parseDouble(precio);
             double cantidad = Double.parseDouble(txtCantidad.getText());
             double medidas = Double.parseDouble(txtMedidas.getText());
-
+            double porc = Double.parseDouble(comisionNeta) / 100;
+            
             if (txtMedidas.getText().equals("")) {
                 //txtCantidad.setText("1");
-            }
-            else {
+            } else {
                 importe = (medidas * prec) * cantidad;
+                double totalComision = porc * importe;
+                labelComision.setText(df.format(totalComision) + "");
                 txtImporte.setText(df.format(importe) + "");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
         }
     }//GEN-LAST:event_txtCantidadKeyReleased
 
@@ -522,16 +534,17 @@ public class ventanaGranFormato extends javax.swing.JFrame {
             double prec = Double.parseDouble(precio);
             double cantidad = Double.parseDouble(txtCantidad.getText());
             double medidas = Double.parseDouble(txtMedidas.getText());
+            double porc = Double.parseDouble(comisionNeta) / 100;
 
             if (txtMedidas.getText().equals("")) {
                 //txtCantidad.setText("1");
-            }
-            else {
+            } else {
                 importe = (medidas * prec) * cantidad;
+                double totalComision = porc * importe;
+                labelComision.setText(df.format(totalComision) + "");
                 txtImporte.setText(df.format(importe) + "");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
         }
     }
 
@@ -542,8 +555,7 @@ public class ventanaGranFormato extends javax.swing.JFrame {
             txtMedidas.setText(df.format(resultado));
             calcularImporte();
             calcularPrecioU();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
         }
     }//GEN-LAST:event_txtBaseKeyReleased
 
@@ -554,8 +566,7 @@ public class ventanaGranFormato extends javax.swing.JFrame {
             txtMedidas.setText(df.format(resultado));
             calcularImporte();
             calcularPrecioU();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
         }
     }//GEN-LAST:event_txtAlturaKeyReleased
 
@@ -587,7 +598,7 @@ public class ventanaGranFormato extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        /*   java.awt.EventQueue.invokeLater(new Runnable() {
+ /*   java.awt.EventQueue.invokeLater(new Runnable() {
          public void run() {
          new ventanaGranFormato().setVisible(true);
          }
@@ -612,6 +623,7 @@ public class ventanaGranFormato extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel labelComision;
     private javax.swing.JRadioButton radioMaquila;
     private javax.swing.JRadioButton radioPublicoG;
     private javax.swing.JTable tablaArticulos;

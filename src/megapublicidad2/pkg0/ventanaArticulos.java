@@ -30,7 +30,7 @@ public class ventanaArticulos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
 
         this.panel = panel;
-        
+
         u = new Generales(c);
 
         iniciaTabla();
@@ -53,23 +53,26 @@ public class ventanaArticulos extends javax.swing.JFrame {
         if (txtMedidas.getText().equals("-")) {
             pu = (cantidad * prec);
             txtPrecioUnitario.setText(df.format(pu));
-        }
-        else {
+        } else {
             pu = (medidas * prec);
             txtPrecioUnitario.setText(df.format(pu));
         }
     }
 
-
     public void calcular() {
+
+        double porc = Double.parseDouble(comisionNeta) / 100;
 
         if (txtMedidas.getText().equals("-")) {
             double importe = Double.parseDouble(precio) * Double.parseDouble(txtCantidad.getText());
+            double totalComision = porc * importe;
+            labelComision.setText(df.format(totalComision) + "");
             txtImporte.setText(df.format(importe) + "");
-        }
-        else {
+        } else {
             double importe = (Double.parseDouble(txtMedidas.getText()) * Double.parseDouble(precio))
                     * Double.parseDouble(txtCantidad.getText());
+            double totalComision = porc * importe;
+            labelComision.setText(df.format(totalComision) + "");
             txtImporte.setText(df.format(importe) + "");
         }
     }
@@ -116,6 +119,7 @@ public class ventanaArticulos extends javax.swing.JFrame {
         txtMedidas = new javax.swing.JTextField();
         txtPrecioUnitario = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
+        labelComision = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -155,12 +159,14 @@ public class ventanaArticulos extends javax.swing.JFrame {
             }
         });
         jScrollPane4.setViewportView(tablaArticulos);
-        tablaArticulos.getColumnModel().getColumn(0).setMinWidth(35);
-        tablaArticulos.getColumnModel().getColumn(0).setPreferredWidth(35);
-        tablaArticulos.getColumnModel().getColumn(0).setMaxWidth(35);
-        tablaArticulos.getColumnModel().getColumn(1).setMinWidth(100);
-        tablaArticulos.getColumnModel().getColumn(1).setPreferredWidth(100);
-        tablaArticulos.getColumnModel().getColumn(1).setMaxWidth(100);
+        if (tablaArticulos.getColumnModel().getColumnCount() > 0) {
+            tablaArticulos.getColumnModel().getColumn(0).setMinWidth(35);
+            tablaArticulos.getColumnModel().getColumn(0).setPreferredWidth(35);
+            tablaArticulos.getColumnModel().getColumn(0).setMaxWidth(35);
+            tablaArticulos.getColumnModel().getColumn(1).setMinWidth(100);
+            tablaArticulos.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tablaArticulos.getColumnModel().getColumn(1).setMaxWidth(100);
+        }
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -190,7 +196,7 @@ public class ventanaArticulos extends javax.swing.JFrame {
 
         getContentPane().add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 60, 480, 392));
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Registro", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.white));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Registro", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), java.awt.Color.white)); // NOI18N
         jPanel3.setOpaque(false);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -266,6 +272,9 @@ public class ventanaArticulos extends javax.swing.JFrame {
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Precio Unitario");
 
+        labelComision.setText("-");
+        labelComision.setName("labelComision"); // NOI18N
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -274,43 +283,46 @@ public class ventanaArticulos extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addGap(118, 118, 118)
-                        .addComponent(jLabel2))
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11)
-                    .addComponent(txtDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12)
-                    .addComponent(txtPrec, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelComision)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addContainerGap())
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtMedidas))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(radioPublicoG)
+                                .addComponent(jLabel10)
+                                .addGap(118, 118, 118)
+                                .addComponent(jLabel2))
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11)
+                            .addComponent(txtDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12)
+                            .addComponent(txtPrec, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtMedidas))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel14))
                                 .addGap(18, 18, 18)
-                                .addComponent(radioMaquila))))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel15)
-                            .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel16)
-                            .addComponent(txtPrecioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(11, 11, 11))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton2)
-                .addContainerGap())
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(radioPublicoG)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(radioMaquila))))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel15)
+                                    .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel16)
+                                    .addComponent(txtPrecioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(11, 11, 11))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -355,7 +367,9 @@ public class ventanaArticulos extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPrecioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(labelComision))
                 .addContainerGap(79, Short.MAX_VALUE))
         );
 
@@ -379,9 +393,8 @@ public class ventanaArticulos extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             calcular();
-           // calcularPrecioU();
-        }
-        catch (Exception e) {
+            // calcularPrecioU();
+        } catch (Exception e) {
         }
     }//GEN-LAST:event_txtCantidadKeyReleased
     // double alto=0,ancho=0;
@@ -390,21 +403,21 @@ public class ventanaArticulos extends javax.swing.JFrame {
         String comentario = "";
         if (existencia.equals("0") || existencia.equals("0.0")) {
             JOptionPane.showMessageDialog(this, "Producto con 0 existencias");
-        }
-        else {
+        } else {
             if (!txtMedidas.getText().equals("-")) {
                 comentario = "(" + txtMedidas.getText() + " ML)";
             }
 
             if (panel.equals("VENTAS")) {
-                ventas.agregarArticulo(txtCodigo.getText(), txtNombre.getText() + comentario, txtMedidas.getText(), txtCantidad.getText(), 
-                        df.format((Double.parseDouble(txtPrecioUnitario.getText())))+"", df.format((Double.parseDouble(txtImporte.getText())))+"");
-               // ventas.desglozarImpuestosVenta();
-            }
-            else {
-                ventas.agregarArticuloCotizacion(txtCodigo.getText(), txtNombre.getText() + comentario, txtMedidas.getText(), 
-                        txtCantidad.getText(), df.format((Double.parseDouble(txtPrecioUnitario.getText())))+"", df.format((Double.parseDouble(txtImporte.getText())))+"");
-               // ventas.desglozarImpuestosCoti();
+                ventas.agregarArticulo(txtCodigo.getText(), txtNombre.getText() + comentario, txtMedidas.getText(), txtCantidad.getText(),
+                        df.format((Double.parseDouble(txtPrecioUnitario.getText()))) + "",
+                        df.format((Double.parseDouble(txtImporte.getText()))) + "", labelComision.getText());
+                // ventas.desglozarImpuestosVenta();
+            } else {
+                ventas.agregarArticuloCotizacion(txtCodigo.getText(), txtNombre.getText() + comentario, txtMedidas.getText(),
+                        txtCantidad.getText(), df.format((Double.parseDouble(txtPrecioUnitario.getText()))) + "",
+                        df.format((Double.parseDouble(txtImporte.getText()))) + "", labelComision.getText());
+                // ventas.desglozarImpuestosCoti();
             }
         }
         if (Double.parseDouble(existencia) < 20) {
@@ -412,7 +425,7 @@ public class ventanaArticulos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    String existencia = "";
+    String existencia = "", comisionNeta="";
     private void tablaArticulosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaArticulosMouseClicked
         // TODO add your handling code here:
         DefaultTableModel modelo = (DefaultTableModel) tablaArticulos.getModel();
@@ -425,10 +438,13 @@ public class ventanaArticulos extends javax.swing.JFrame {
         if (radioPublicoG.isSelected()) {
             txtPrec.setText(modelo.getValueAt(tablaArticulos.getSelectedRow(), 4) + "");
             precio = modelo.getValueAt(tablaArticulos.getSelectedRow(), 4) + "";
-        }
-        else {
+            comisionNeta=u.devuelveUnDato("select comisiong from productos where id =" + txtCodigo.getText());
+            labelComision.setText(comisionNeta);
+        } else {
             txtPrec.setText(modelo.getValueAt(tablaArticulos.getSelectedRow(), 5) + "");
             precio = modelo.getValueAt(tablaArticulos.getSelectedRow(), 5) + "";
+            comisionNeta=u.devuelveUnDato("select comisionm from productos where id =" + txtCodigo.getText());
+            labelComision.setText(comisionNeta);
         }
 
         calcular();
@@ -440,8 +456,7 @@ public class ventanaArticulos extends javax.swing.JFrame {
         try {
             calcular();
             calcularPrecioU();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
         }
     }//GEN-LAST:event_txtMedidasKeyReleased
 
@@ -473,7 +488,7 @@ public class ventanaArticulos extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        /*  java.awt.EventQueue.invokeLater(new Runnable() {
+ /*  java.awt.EventQueue.invokeLater(new Runnable() {
          public void run() {
          new ventanaArticulos().setVisible(true);
          }
@@ -496,6 +511,7 @@ public class ventanaArticulos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel labelComision;
     private javax.swing.JRadioButton radioMaquila;
     private javax.swing.JRadioButton radioPublicoG;
     private javax.swing.JTable tablaArticulos;

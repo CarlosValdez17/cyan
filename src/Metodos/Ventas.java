@@ -24,12 +24,12 @@ public class Ventas {
 
     public void RealizaVenta(DefaultTableModel modelo, String cliente, String concepto, String total, String fecha, String estado,
             String tipoPago, String estadoPago, String factu, String entregado, String usu,
-            String sub, String descuento, String impuestos, String comentarios) {
+            String sub, String descuento, String impuestos, String comentarios, String totalComisiones) {
 
         try {
             String sql = "INSERT INTO ventas VALUES(null,'" + cliente + "','" + concepto + "','" + total + "','" + fecha + "',"
                     + "'" + estado + "','" + tipoPago + "','" + estadoPago + "','" + factu + "','" + entregado + "','" + usu + "',"
-                    + "'" + sub + "','" + descuento + "','" + impuestos + "', '" + comentarios + "')";
+                    + "'" + sub + "','" + descuento + "','" + impuestos + "', '" + comentarios + "', "+totalComisiones+")";
             System.out.println(sql);
             CallableStatement cmd = cn.prepareCall(sql);
             cmd.execute();
@@ -49,9 +49,10 @@ public class Ventas {
                 String cant = modelo.getValueAt(i, 3) + "";
                 String pu = modelo.getValueAt(i, 4) + "";
                 String tot = modelo.getValueAt(i, 5) + "";
+                String comisionNeta = modelo.getValueAt(i, 6)+"";
 
                 sql = "INSERT INTO detalle_venta VALUES (" + noVenta + "," + codigo + ",'" + prod + "'," + cant + "," + pu + "," + tot + ", "
-                        + "'" + estadoPago + "' )";
+                        + "'" + estadoPago + "', "+comisionNeta+" )";
                 cmd = cn.prepareCall(sql);
                 cmd.execute();
                 double medidas;

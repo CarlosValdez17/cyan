@@ -26,6 +26,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -72,6 +73,8 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         panelCorteCaja.setVisible(false);
         panelReportes.setVisible(false);
         panelContador.setVisible(false);
+        panelComisiones.setVisible(false);
+
         jButton29.setVisible(false);
         jButton16.setVisible(false);
 
@@ -86,6 +89,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             jButton39.setVisible(false);
             jButton50.setVisible(true);
             jButton14.setVisible(false);
+            jButton62.setVisible(false);
         } else {
             //JOptionPane.showMessageDialog(null, tipoUsu);
         }
@@ -93,6 +97,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         fecha = new SimpleDateFormat("yyyy-MM-dd").format(GregorianCalendar.getInstance().getTime());
 
         cargarTablas();
+
     }
 
     public void prenderBoton(JButton boton, JPanel panel) {
@@ -106,6 +111,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         panelInicio.setVisible(false);
         panelReportes.setVisible(false);
         panelContador.setVisible(false);
+        panelComisiones.setVisible(false);
 
         panel.setVisible(true);
 
@@ -120,6 +126,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         jButton14.setBackground(Color.getColor("FFFFFF"));
         jButton38.setBackground(Color.getColor("FFFFFF"));
         jButton50.setBackground(Color.getColor("FFFFFF"));
+        jButton62.setBackground(Color.getColor("FFFFFF"));
 
         //CAMBIAR COLORES BOTOTES
         boton.setBackground(Color.getHSBColor(163, 238, 66));
@@ -128,9 +135,11 @@ public class ventanaPrincipal extends javax.swing.JFrame {
 
     public void cargarTablas() {
         llenaUsuarios();
+        llenarEmpleados();
         cargarCupones();
         cargarClientes();
         cargarProductos();
+        cargarComisiones();
         iniciaCortes();
         iniciaOrdenes("general");
         cargarReportes("", "");
@@ -142,22 +151,22 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         if (!ico.equals(" ")) {
             String path = "";
             switch (ico) {
-                case "2 ":
+                case "2":
                     path = "/Imagenes/chica.png";
                     break;
-                case "3 ":
+                case "3":
                     path = "/Imagenes/chica2.png";
                     break;
-                case "4 ":
+                case "4":
                     path = "/Imagenes/chica3.png";
                     break;
-                case "5 ":
+                case "5":
                     path = "/Imagenes/chico.png";
                     break;
-                case "6 ":
+                case "6":
                     path = "/Imagenes/chico2.png";
                     break;
-                case "1 ":
+                case "1":
                     path = "/Imagenes/chico (3).png";
                     break;
             }
@@ -168,15 +177,17 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         calcularExistencias();
     }
 
-    public void agregarArticulo(String codigo, String articulo, String medidas, String cantidad, String pu, String importe) {
+    public void agregarArticulo(String codigo, String articulo, String medidas, String cantidad, String pu,
+            String importe, String comision) {
         DefaultTableModel modelo = (DefaultTableModel) tablaVenta.getModel();
-        modelo.addRow(new Object[]{codigo, articulo, medidas, cantidad, pu, importe});
+        modelo.addRow(new Object[]{codigo, articulo, medidas, cantidad, pu, importe, comision});
         sumaVenta();
     }
 
-    public void agregarArticuloCotizacion(String codigo, String articulo, String medidas, String cantidad, String pu, String importe) {
+    public void agregarArticuloCotizacion(String codigo, String articulo, String medidas, String cantidad, String pu,
+            String importe, String comision) {
         DefaultTableModel modelo = (DefaultTableModel) tablaVenta1.getModel();
-        modelo.addRow(new Object[]{codigo, articulo, medidas, cantidad, pu, importe});
+        modelo.addRow(new Object[]{codigo, articulo, medidas, cantidad, pu, importe, comision});
         sumaCotizacion();
     }
 
@@ -215,6 +226,11 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     public void llenarCategorias() {
         String[] cat = u.llenarCategorias().split(",");
         comboTipo.setModel(new DefaultComboBoxModel((Object[]) cat));
+    }
+
+    public void llenarEmpleados() {
+        String[] cat = u.llenarUsuarios().split(",");
+        comboEmpleados.setModel(new DefaultComboBoxModel((Object[]) cat));
     }
 
     public void cargarCupones() {
@@ -262,6 +278,12 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         limpiar(tablaServ);
         DefaultTableModel modelo = (DefaultTableModel) tablaServ.getModel();
         u.tablaProductos(modelo, "");
+    }
+
+    public void cargarComisiones() {
+        limpiar(tablaComisiones);
+        DefaultTableModel modelo = (DefaultTableModel) tablaComisiones.getModel();
+        u.tablaComisiones(modelo, "");
     }
 
     public void cargarReportes(String tipo, String where2) {
@@ -327,6 +349,9 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         txtPI2.setText("0");
         txtMinima.setText("0");
         txtExistencias.setText("0");
+        comisionpor.setText("0");
+        comisionG.setText("0");
+        comisionM.setText("0");
     }
 
     public void limpiarVenta() {
@@ -402,6 +427,16 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             total = total + Float.parseFloat(modelo.getValueAt(i, 5) + "");
         }
         txtTotal.setText(df.format(total));
+    }
+    
+     public void sumaComisiones() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaComisiones.getModel();
+
+        float total = 0;
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            total = total + Float.parseFloat(modelo.getValueAt(i, 5) + "");
+        }
+        labelTotalComisiones.setText(df.format(total));
     }
 
     public void sumaReportes() {
@@ -481,7 +516,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
 
             v.RealizaVenta(modelo, tCliente.getText(), labelTema.getText(), totalPago, fechaBase, "VENTA",
                     tipoPago, estadoPago, factu, entregado, labelUsuarioLog.getText(),
-                    txtSub.getText(), txtDescuento.getText(), txtImpuestos.getText(), txtComentarios.getText());
+                    txtSub.getText(), txtDescuento.getText(), txtImpuestos.getText(), txtComentarios.getText(), totalComisiones());
 
             String tic
                     = "         PIXELARTE\n"
@@ -675,6 +710,17 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         // reiniciar();
     }
 
+    public String totalComisiones() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaVenta.getModel();
+
+        float total = 0;
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            total = total + Float.parseFloat(modelo.getValueAt(i, 6) + "");
+        }
+
+        return total + "";
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -850,6 +896,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         jLabel35 = new javax.swing.JLabel();
         txtDescuento = new javax.swing.JTextField();
         txtTotal = new javax.swing.JTextField();
+        jButton60 = new javax.swing.JButton();
         jButton46 = new javax.swing.JButton();
         jButton51 = new javax.swing.JButton();
         panelClientes = new javax.swing.JPanel();
@@ -949,6 +996,24 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         jLabel65 = new javax.swing.JLabel();
         jButton54 = new javax.swing.JButton();
         jLabel62 = new javax.swing.JLabel();
+        panelComisiones = new javax.swing.JPanel();
+        jPanel26 = new javax.swing.JPanel();
+        jLabel25 = new javax.swing.JLabel();
+        comboEmpleados = new javax.swing.JComboBox<>();
+        jLabel70 = new javax.swing.JLabel();
+        fechaComision2 = new com.toedter.calendar.JDateChooser();
+        fechaComision3 = new com.toedter.calendar.JDateChooser();
+        jLabel71 = new javax.swing.JLabel();
+        fechaComision = new com.toedter.calendar.JDateChooser();
+        jLabel72 = new javax.swing.JLabel();
+        jButton64 = new javax.swing.JButton();
+        jButton65 = new javax.swing.JButton();
+        jPanel27 = new javax.swing.JPanel();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        tablaComisiones = new javax.swing.JTable();
+        jButton61 = new javax.swing.JButton();
+        jLabel73 = new javax.swing.JLabel();
+        labelTotalComisiones = new javax.swing.JLabel();
         jLabel63 = new javax.swing.JLabel();
         jPanel19 = new javax.swing.JPanel();
         labelUsuarioLog = new javax.swing.JLabel();
@@ -964,6 +1029,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         jButton43 = new javax.swing.JButton();
         jButton50 = new javax.swing.JButton();
         jButton59 = new javax.swing.JButton();
+        jButton62 = new javax.swing.JButton();
         jPanel20 = new javax.swing.JPanel();
         jLabel61 = new javax.swing.JLabel();
 
@@ -1882,11 +1948,11 @@ public class ventanaPrincipal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "#", "Categoria", "Nombre", "Descripcion", "Precio General", "Precio Maquila", "Tipo", "Cantidad Minima", "Existencias", "Comision Gral", "Comision Maquila"
+                "#", "Categoria", "Nombre", "Descripcion", "Precio General", "Precio Maquila", "Tipo", "Cantidad Minima", "Existencias", "% Comision", "Comision Gral", "Comision Maquila"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -2271,11 +2337,11 @@ public class ventanaPrincipal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "#", "Producto/Servicio", "Medidas", "Cantidad", "Precio Unitario", "Total"
+                "#", "Producto/Servicio", "Medidas", "Cantidad", "Precio Unitario", "Total", "%"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -2287,6 +2353,9 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             tablaVenta.getColumnModel().getColumn(0).setMinWidth(25);
             tablaVenta.getColumnModel().getColumn(0).setPreferredWidth(30);
             tablaVenta.getColumnModel().getColumn(0).setMaxWidth(35);
+            tablaVenta.getColumnModel().getColumn(6).setMinWidth(30);
+            tablaVenta.getColumnModel().getColumn(6).setPreferredWidth(30);
+            tablaVenta.getColumnModel().getColumn(6).setMaxWidth(40);
         }
 
         jPanel9.setBackground(new java.awt.Color(112, 144, 244));
@@ -2446,6 +2515,13 @@ public class ventanaPrincipal extends javax.swing.JFrame {
 
         txtDescuento.setText("0.0");
 
+        jButton60.setText("jButton60");
+        jButton60.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton60ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
         jPanel22.setLayout(jPanel22Layout);
         jPanel22Layout.setHorizontalGroup(
@@ -2457,7 +2533,9 @@ public class ventanaPrincipal extends javax.swing.JFrame {
                 .addComponent(jButton13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addComponent(jButton15)
-                .addGap(131, 131, 131)
+                .addGap(34, 34, 34)
+                .addComponent(jButton60)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel22Layout.createSequentialGroup()
                         .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2489,18 +2567,23 @@ public class ventanaPrincipal extends javax.swing.JFrame {
                     .addComponent(jButton13))
                 .addGap(33, 33, 33))
             .addGroup(jPanel22Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel33)
-                    .addComponent(jLabel35)
-                    .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel34)
-                    .addComponent(txtImpuestos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel36)
-                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel22Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtSub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel33)
+                            .addComponent(jLabel35)
+                            .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel34)
+                            .addComponent(txtImpuestos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel36)
+                            .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel22Layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addComponent(jButton60)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -3597,6 +3680,183 @@ public class ventanaPrincipal extends javax.swing.JFrame {
 
         jPanel1.add(panelInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1010, 538));
 
+        panelComisiones.setOpaque(false);
+
+        jPanel26.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtros"));
+        jPanel26.setOpaque(false);
+
+        jLabel25.setText("Empleado");
+
+        comboEmpleados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboEmpleados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboEmpleadosActionPerformed(evt);
+            }
+        });
+
+        jLabel70.setText("Fecha Inicial");
+
+        fechaComision2.setOpaque(false);
+
+        fechaComision3.setOpaque(false);
+
+        jLabel71.setText("Fecha Final");
+
+        fechaComision.setOpaque(false);
+
+        jLabel72.setText("Fecha");
+
+        jButton64.setText("Consultar");
+        jButton64.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton64ActionPerformed(evt);
+            }
+        });
+
+        jButton65.setText("Consultar");
+        jButton65.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton65ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel26Layout = new javax.swing.GroupLayout(jPanel26);
+        jPanel26.setLayout(jPanel26Layout);
+        jPanel26Layout.setHorizontalGroup(
+            jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel26Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel25)
+                    .addComponent(comboEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel72)
+                    .addGroup(jPanel26Layout.createSequentialGroup()
+                        .addComponent(fechaComision, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton65)))
+                .addGap(56, 56, 56)
+                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel70)
+                    .addComponent(fechaComision2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel26Layout.createSequentialGroup()
+                        .addComponent(jLabel71)
+                        .addGap(108, 108, 108))
+                    .addComponent(fechaComision3, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton64)
+                .addContainerGap())
+        );
+        jPanel26Layout.setVerticalGroup(
+            jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel26Layout.createSequentialGroup()
+                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel26Layout.createSequentialGroup()
+                        .addComponent(jLabel71)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fechaComision3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton64)
+                    .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel26Layout.createSequentialGroup()
+                                .addComponent(jLabel72)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(fechaComision, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton65, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGroup(jPanel26Layout.createSequentialGroup()
+                            .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel25)
+                                .addComponent(jLabel70))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(comboEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(fechaComision2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(0, 20, Short.MAX_VALUE))
+        );
+
+        jPanel27.setOpaque(false);
+
+        tablaComisiones.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Folio #", "Cliente", "Concepto", "Fecha", "Total", "Comision", "Usuario"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane12.setViewportView(tablaComisiones);
+
+        jButton61.setText("jButton61");
+
+        jLabel73.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel73.setText("Total Comisiones");
+
+        labelTotalComisiones.setText("-");
+
+        javax.swing.GroupLayout jPanel27Layout = new javax.swing.GroupLayout(jPanel27);
+        jPanel27.setLayout(jPanel27Layout);
+        jPanel27Layout.setHorizontalGroup(
+            jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel27Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane12)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel27Layout.createSequentialGroup()
+                        .addComponent(jLabel73)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(labelTotalComisiones)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton61)))
+                .addContainerGap())
+        );
+        jPanel27Layout.setVerticalGroup(
+            jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel27Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton61)
+                    .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel73)
+                        .addComponent(labelTotalComisiones)))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout panelComisionesLayout = new javax.swing.GroupLayout(panelComisiones);
+        panelComisiones.setLayout(panelComisionesLayout);
+        panelComisionesLayout.setHorizontalGroup(
+            panelComisionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelComisionesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelComisionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        panelComisionesLayout.setVerticalGroup(
+            panelComisionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelComisionesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel1.add(panelComisiones, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1010, 550));
+
         jLabel63.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondopanel2.jpg"))); // NOI18N
         jLabel63.setText(" ");
         jPanel1.add(jLabel63, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -3604,6 +3864,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 135, 1030, 560));
 
         jPanel19.setBackground(new java.awt.Color(27, 51, 94));
+        jPanel19.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         labelUsuarioLog.setBackground(new java.awt.Color(13, 33, 83));
         labelUsuarioLog.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -3813,6 +4074,23 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButton62.setBackground(new java.awt.Color(27, 51, 94));
+        jButton62.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jButton62.setForeground(new java.awt.Color(255, 255, 255));
+        jButton62.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/corte.png"))); // NOI18N
+        jButton62.setText("Comisiones");
+        jButton62.setBorderPainted(false);
+        jButton62.setContentAreaFilled(false);
+        jButton62.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton62.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton62.setIconTextGap(30);
+        jButton62.setOpaque(true);
+        jButton62.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton62ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
         jPanel19.setLayout(jPanel19Layout);
         jPanel19Layout.setHorizontalGroup(
@@ -3830,6 +4108,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             .addComponent(jButton43, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton50, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton59, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jButton62, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3838,30 +4117,33 @@ public class ventanaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelUsuarioLog, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17)
-                .addComponent(jButton43, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton43, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton30, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton30, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton23, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton23, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton39, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton39, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton38, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton62, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton50, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton38, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton59, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButton50, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton59, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 240, 700));
+        getContentPane().add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 240, 690));
 
         jPanel20.setBackground(new java.awt.Color(91, 166, 221));
 
@@ -4013,7 +4295,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
 
             u.insertaProducto(tipo, txtNombreP.getText(), txtDesc.getText(),
                     Double.parseDouble(txtPI.getText()), Double.parseDouble(txtPI2.getText()),
-                    tipoFormato, txtMinima.getText(), txtExistencias.getText(), Double.parseDouble(comisionG.getText()),
+                    tipoFormato, txtMinima.getText(), txtExistencias.getText(), comisionpor.getText(), Double.parseDouble(comisionG.getText()),
                     Double.parseDouble(comisionM.getText()));
             JOptionPane.showMessageDialog(null, "Registro exitoso");
 
@@ -4045,7 +4327,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             }
 
             u.actualizarArticulo(codP, txtNombreP.getText(), txtDesc.getText(), txtPI.getText(), txtPI2.getText(),
-                    tipoFormato, txtMinima.getText(), txtExistencias.getText());
+                    tipoFormato, txtMinima.getText(), txtExistencias.getText(), comisionpor.getText(), comisionG.getText(), comisionM.getText());
             cargarProductos();
             limpiarCampos();
             JOptionPane.showMessageDialog(null, "Producto/Servicio actualizado");
@@ -4065,6 +4347,9 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         txtPI2.setText(modelo.getValueAt(tablaServ.getSelectedRow(), 5) + "");
         txtMinima.setText(modelo.getValueAt(tablaServ.getSelectedRow(), 7) + "");
         txtExistencias.setText(modelo.getValueAt(tablaServ.getSelectedRow(), 8) + "");
+        comisionpor.setText(modelo.getValueAt(tablaServ.getSelectedRow(), 9) + "");
+        comisionG.setText(modelo.getValueAt(tablaServ.getSelectedRow(), 10) + "");
+        comisionM.setText(modelo.getValueAt(tablaServ.getSelectedRow(), 11) + "");
 
         String tipo = modelo.getValueAt(tablaServ.getSelectedRow(), 6) + "";
 
@@ -4485,7 +4770,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             } else {
                 v.RealizaVenta(modelo, tCliente1.getText(), labelTema1.getText(), txtTotal1.getText(),
                         fechaBase, "Cotizacion", "", "Cotizacion", "NO", "COTIZACIONES",
-                        labelUsuarioLog.getText(), txtSub1.getText(), txtDescuento1.getText(), txtImpuestos1.getText(), txtComentarios1.getText());
+                        labelUsuarioLog.getText(), txtSub1.getText(), txtDescuento1.getText(), txtImpuestos1.getText(), txtComentarios1.getText(), totalComisiones());
 
                 try {
                     p.pdfCotización(labelTema1.getText(), v.folioVenta(), labelTema1.getText(), articulos, "Cotizacion", fechaBase, txtTotal1.getText(),
@@ -4712,15 +4997,18 @@ public class ventanaPrincipal extends javax.swing.JFrame {
 
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
         // TODO add your handling code here:
+        try {
+            String stock = JOptionPane.showInputDialog(this, "Cantidad:");
+            if (stock.equals("") || stock == null) {
+                JOptionPane.showMessageDialog(this, "Es necesario ingresar cantidad para modificar el stock");
+            } else {
+                Double total = Double.parseDouble(txtExistencias.getText()) + Double.parseDouble(stock);
+                txtExistencias.setText(total + "");
+                u.actualizarStock(codP, df.format(total));
+                cargarProductos();
+            }
+        } catch (Exception e) {
 
-        String stock = JOptionPane.showInputDialog(this, "Cantidad:");
-        if (stock.equals("") || stock == null) {
-            JOptionPane.showMessageDialog(this, "Es necesario ingresar cantidad para modificar el stock");
-        } else {
-            Double total = Double.parseDouble(txtExistencias.getText()) + Double.parseDouble(stock);
-            txtExistencias.setText(total + "");
-            u.actualizarStock(codP, df.format(total));
-            cargarProductos();
         }
     }//GEN-LAST:event_jButton18ActionPerformed
     String tipoPanel = "venta";
@@ -4984,12 +5272,72 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             float valor1 = (porcentaje / 100) * preciog;
             float valor2 = (porcentaje / 100) * preciom;
 
-            comisionG.setText(valor1 + "");
-            comisionM.setText(valor2 + "");
+            comisionG.setText(df.format(valor1) + "");
+            comisionM.setText(df.format(valor2) + "");
         } catch (Exception e) {
 
         }
     }//GEN-LAST:event_comisionporKeyReleased
+
+    private void jButton60ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton60ActionPerformed
+        // TODO add your handling code here:
+
+        DefaultTableModel modelo = (DefaultTableModel) tablaVenta.getModel();
+
+        float total = 0;
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            total = total + Float.parseFloat(modelo.getValueAt(i, 6) + "");
+        }
+        JOptionPane.showMessageDialog(null, df.format(total));
+
+    }//GEN-LAST:event_jButton60ActionPerformed
+
+    private void jButton62ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton62ActionPerformed
+        // TODO add your handling code here:
+        prenderBoton(jButton62, panelComisiones);
+    }//GEN-LAST:event_jButton62ActionPerformed
+
+    private void comboEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboEmpleadosActionPerformed
+        // TODO add your handling code here:
+        limpiar(tablaComisiones);
+        DefaultTableModel modelo = (DefaultTableModel) tablaComisiones.getModel();
+        u.tablaComisiones(modelo, "where v.usuario='" + comboEmpleados.getSelectedItem() + "'");
+        sumaComisiones();
+    }//GEN-LAST:event_comboEmpleadosActionPerformed
+
+    private void jButton65ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton65ActionPerformed
+        // TODO add your handling code here:
+        limpiar(tablaComisiones);
+        DefaultTableModel modelo = (DefaultTableModel) tablaComisiones.getModel();
+        
+        String fecha = new SimpleDateFormat("yyyy-MM-dd").format(fechaComision.getDate());
+
+        if (comboEmpleados.getSelectedItem().equals("Seleccione..")) {
+            u.tablaComisiones(modelo, "where v.fecha='"+fecha+"'");
+        }else{
+            u.tablaComisiones(modelo, "where v.usuario='" + comboEmpleados.getSelectedItem() + "' and v.fecha='"+fecha+"'");
+        }
+        
+        sumaComisiones();
+
+    }//GEN-LAST:event_jButton65ActionPerformed
+
+    private void jButton64ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton64ActionPerformed
+        // TODO add your handling code here:
+          limpiar(tablaComisiones);
+        DefaultTableModel modelo = (DefaultTableModel) tablaComisiones.getModel();
+        
+        String fecha = new SimpleDateFormat("yyyy-MM-dd").format(fechaComision2.getDate());
+        String fecha2 = new SimpleDateFormat("yyyy-MM-dd").format(fechaComision3.getDate());
+
+        if (comboEmpleados.getSelectedItem().equals("Seleccione..")) {
+            u.tablaComisiones(modelo, "where v.fecha between '"+fecha+"' and '"+fecha2+"' ");
+        }else{
+            u.tablaComisiones(modelo, "where v.fecha between '"+fecha+"' and '"+fecha2+"' and (v.usuario='" + comboEmpleados.getSelectedItem() + "') ");
+        }
+
+        sumaComisiones();
+    }//GEN-LAST:event_jButton64ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -5039,10 +5387,14 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JComboBox cmbSucursal1;
     private javax.swing.JComboBox combo;
     private javax.swing.JComboBox combo1;
+    private javax.swing.JComboBox<String> comboEmpleados;
     private javax.swing.JComboBox comboTipo;
     private javax.swing.JTextField comisionG;
     private javax.swing.JTextField comisionM;
     private javax.swing.JTextField comisionpor;
+    private com.toedter.calendar.JDateChooser fechaComision;
+    private com.toedter.calendar.JDateChooser fechaComision2;
+    private com.toedter.calendar.JDateChooser fechaComision3;
     private com.toedter.calendar.JDateChooser fechaCupon;
     private javax.swing.JButton jBAñadir;
     private javax.swing.JButton jBEliminar;
@@ -5103,6 +5455,11 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton58;
     private javax.swing.JButton jButton59;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton60;
+    private javax.swing.JButton jButton61;
+    private javax.swing.JButton jButton62;
+    private javax.swing.JButton jButton64;
+    private javax.swing.JButton jButton65;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
@@ -5128,6 +5485,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
@@ -5177,6 +5535,10 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel68;
     private javax.swing.JLabel jLabel69;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel70;
+    private javax.swing.JLabel jLabel71;
+    private javax.swing.JLabel jLabel72;
+    private javax.swing.JLabel jLabel73;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -5197,6 +5559,8 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;
+    private javax.swing.JPanel jPanel26;
+    private javax.swing.JPanel jPanel27;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -5217,6 +5581,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -5234,8 +5599,10 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel labelIcono;
     private javax.swing.JLabel labelTema;
     private javax.swing.JLabel labelTema1;
+    private javax.swing.JLabel labelTotalComisiones;
     private javax.swing.JLabel labelUsuarioLog;
     private javax.swing.JPanel panelClientes;
+    private javax.swing.JPanel panelComisiones;
     private javax.swing.JPanel panelContador;
     private javax.swing.JPanel panelCorteCaja;
     private javax.swing.JPanel panelCotizaciones;
@@ -5265,6 +5632,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextField tTelefono;
     private javax.swing.JTextField tTelefono1;
     private javax.swing.JTable tablaClientes;
+    private javax.swing.JTable tablaComisiones;
     private javax.swing.JTable tablaCortes;
     private javax.swing.JTable tablaCupones;
     private javax.swing.JTable tablaFacturas;

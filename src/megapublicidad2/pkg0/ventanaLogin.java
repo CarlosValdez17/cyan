@@ -99,7 +99,7 @@ public class ventanaLogin extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         labelMensajeBar.setBackground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(labelMensajeBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 535, 310, 20));
+        getContentPane().add(labelMensajeBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 540, 310, 20));
 
         jProgressBar1.setForeground(new java.awt.Color(0, 0, 0));
         getContentPane().add(jProgressBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 525, 320, 20));

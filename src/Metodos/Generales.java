@@ -26,7 +26,6 @@ public class Generales {
     }
 
     /* METODOS PARA INSERTAR, ELIMINAR Y MODIFICAR CLIENTES EN EL SISTEMA */
-
     public void insertaCliente(String nom, String rep, String rfc, String dir, String cp, String correo, String tel,
             String mun, String est) {
         try {
@@ -192,8 +191,30 @@ public class Generales {
             CallableStatement cmd = cn.prepareCall(sql);
             ResultSet rs = cmd.executeQuery();
             while (rs.next()) {
-                Object[] datos = new Object[11];
-                for (int i = 0; i < 11; i++) {
+                Object[] datos = new Object[12];
+                for (int i = 0; i < 12; i++) {
+                    datos[i] = rs.getString(i + 1);
+                }
+                modelo.addRow(datos);
+            }
+            cmd.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error en tablaProductos");
+        }
+    }
+
+    public void tablaComisiones(DefaultTableModel modelo, String where) {
+
+        try {
+            String sql = "select v.id, c.Nombre, v.concepto, v.fecha, v.total, v.totalComisiones, v.usuario\n"
+                    + "from ventas v\n"
+                    + "INNER JOIN clientes c on(v.cliente=c.idCliente)\n "+where+" "
+                    + "order by v.usuario asc ";
+            CallableStatement cmd = cn.prepareCall(sql);
+            ResultSet rs = cmd.executeQuery();
+            while (rs.next()) {
+                Object[] datos = new Object[12];
+                for (int i = 0; i < 7; i++) {
                     datos[i] = rs.getString(i + 1);
                 }
                 modelo.addRow(datos);
@@ -224,10 +245,10 @@ public class Generales {
     }
 
     public void insertaProducto(String tipo, String nombre, String desc, Double prec, Double prec2,
-            String tipoF, String minima, String existencia, Double cg, Double cm) {
+            String tipoF, String minima, String existencia, String com, Double cg, Double cm) {
         try {
             String sql = "insert into productos values(null,'" + tipo + "','" + nombre + "','" + desc + "',"
-                    + "'" + prec + "','" + prec2 + "', '" + tipoF + "','" + minima + "','" + existencia + "', "+cg+","+cm+")";
+                    + "'" + prec + "','" + prec2 + "', '" + tipoF + "','" + minima + "','" + existencia + "', " + com + ", " + cg + "," + cm + ")";
 
             PreparedStatement cmd = cn.prepareCall(sql);
             cmd.execute();
@@ -249,10 +270,12 @@ public class Generales {
         }
     }
 
-    public void actualizarArticulo(String codigo, String nom, String desc, String prec, String pm, String tipo, String minima, String exis) {
+    public void actualizarArticulo(String codigo, String nom, String desc, String prec,
+            String pm, String tipo, String minima, String exis, String com, String cg, String cm) {
         try {
             String sql = "UPDATE productos set nombre='" + nom + "',descripcion='" + desc + "',precio=" + prec + ","
-                    + "precioMaquila=" + pm + ", tipoFormato='" + tipo + "',minima='" + minima + "',existencias='" + exis + "' WHERE id='" + codigo + "' ";
+                    + "precioMaquila=" + pm + ", tipoFormato='" + tipo + "',minima='" + minima + "',existencias='" + exis + "', "
+                    + "comision=" + com + ", comisiong=" + cg + ", comisionm=" + cm + " WHERE id='" + codigo + "' ";
             PreparedStatement cmd = cn.prepareCall(sql);
             cmd.execute();
             cmd.close();
@@ -406,6 +429,26 @@ public class Generales {
         return null;
     }
 
+     public String llenarUsuarios() {
+        try {
+            String sql = "SELECT CONCAT(nombre,' ',apellido) from usuarios";
+            CallableStatement cmd = cn.prepareCall(sql);
+            ResultSet rs = cmd.executeQuery();
+            String a = "Seleccione..,";
+            while (rs.next()) {
+                Object[] datos = new Object[2];
+                for (int i = 0; i < 1; i++) {
+                    datos[i] = rs.getString(i + 1);
+                }
+                a += datos[0] + ",";
+            }
+            cmd.close();
+            return a;
+        } catch (Exception ex) {
+        }
+        return null;
+    }
+    
     public void cargarUsu(DefaultTableModel modelo) {
 
         try {
@@ -526,5 +569,27 @@ public class Generales {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error en  eliminar cat." + ex);
         }
+    }
+
+    public String devuelveUnDato(String sql) {
+        try {
+            //System.out.println(sql);
+            CallableStatement cmd = cn.prepareCall(sql);
+            ResultSet rs = cmd.executeQuery();
+            String a = "";
+            while (rs.next()) {
+                Object[] datos = new Object[2];
+                for (int i = 0; i < 1; i++) {
+                    datos[i] = rs.getString(i + 1);
+                }
+                a = datos[0] + "";
+                //System.out.println(a);
+            }
+            cmd.close();
+            return a;
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error - Devolver 1 Dato - Metodo \n" + ex);
+        }
+        return null;
     }
 }
