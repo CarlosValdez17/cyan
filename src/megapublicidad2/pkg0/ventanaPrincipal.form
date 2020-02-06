@@ -4602,13 +4602,10 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel71" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="jLabel71" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="fechaComision3" alignment="0" min="-2" pref="145" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                           <Component id="jButton64" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -5282,7 +5279,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/corte.png"/>
+              <Image iconType="3" name="/Imagenes/money(2).png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Comisiones"/>
             <Property name="borderPainted" type="boolean" value="false"/>

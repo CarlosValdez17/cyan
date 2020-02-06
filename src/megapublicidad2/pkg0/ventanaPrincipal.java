@@ -3742,11 +3742,9 @@ public class ventanaPrincipal extends javax.swing.JFrame {
                     .addComponent(fechaComision2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel26Layout.createSequentialGroup()
-                        .addComponent(jLabel71)
-                        .addGap(108, 108, 108))
+                    .addComponent(jLabel71)
                     .addComponent(fechaComision3, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(17, 17, 17)
                 .addComponent(jButton64)
                 .addContainerGap())
         );
@@ -4077,7 +4075,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         jButton62.setBackground(new java.awt.Color(27, 51, 94));
         jButton62.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         jButton62.setForeground(new java.awt.Color(255, 255, 255));
-        jButton62.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/corte.png"))); // NOI18N
+        jButton62.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/money(2).png"))); // NOI18N
         jButton62.setText("Comisiones");
         jButton62.setBorderPainted(false);
         jButton62.setContentAreaFilled(false);
