@@ -208,13 +208,37 @@ public class Generales {
         try {
             String sql = "select v.id, c.Nombre, v.concepto, v.fecha, v.total, v.totalComisiones, v.usuario\n"
                     + "from ventas v\n"
-                    + "INNER JOIN clientes c on(v.cliente=c.idCliente)\n "+where+" "
+                    + "INNER JOIN clientes c on(v.cliente=c.idCliente)\n " + where + " "
                     + "order by v.usuario asc ";
+            System.out.println(sql);
             CallableStatement cmd = cn.prepareCall(sql);
             ResultSet rs = cmd.executeQuery();
             while (rs.next()) {
                 Object[] datos = new Object[12];
                 for (int i = 0; i < 7; i++) {
+                    datos[i] = rs.getString(i + 1);
+                }
+                modelo.addRow(datos);
+            }
+            cmd.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error en tablaProductos");
+        }
+    }
+
+    public void tablaComisiones2(DefaultTableModel modelo, String where) {
+
+        try {
+            String sql = "  select v.usuario, sum(v.totalComisiones)\n"
+                    + "from ventas v\n"
+                    + "INNER JOIN clientes c on(v.cliente=c.idCliente)\n " + where + " "
+                    + "group by v.usuario ";
+            System.out.println(sql);
+            CallableStatement cmd = cn.prepareCall(sql);
+            ResultSet rs = cmd.executeQuery();
+            while (rs.next()) {
+                Object[] datos = new Object[2];
+                for (int i = 0; i < 2; i++) {
                     datos[i] = rs.getString(i + 1);
                 }
                 modelo.addRow(datos);
@@ -429,7 +453,7 @@ public class Generales {
         return null;
     }
 
-     public String llenarUsuarios() {
+    public String llenarUsuarios() {
         try {
             String sql = "SELECT CONCAT(nombre,' ',apellido) from usuarios";
             CallableStatement cmd = cn.prepareCall(sql);
@@ -448,7 +472,7 @@ public class Generales {
         }
         return null;
     }
-    
+
     public void cargarUsu(DefaultTableModel modelo) {
 
         try {

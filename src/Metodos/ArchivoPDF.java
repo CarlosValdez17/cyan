@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 
@@ -203,6 +204,93 @@ public class ArchivoPDF {
 
     }
 
+    public void pdfReporteComisionesIndividual(String nombreArchivo, Object[][] articulos, Object[][] articulos2, String tipo, String comen, String total)
+            throws DocumentException, IOException {
+        try {
+            Document documento = new Document(PageSize.LETTER);
+
+            Image img = Image.getInstance("cyanlogo.png");
+
+            FileOutputStream ficheroPdf = new FileOutputStream(nombreArchivo + ".pdf");
+            PdfWriter.getInstance(documento, ficheroPdf).setInitialLeading(20);
+
+            documento.open();
+            img.setAbsolutePosition(380f, 695f);
+            documento.add(img);
+
+            Font fuente = new Font();
+            Font fuente2 = new Font();
+            Font fuenteNegrita = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+            fuente.setSize(8);
+            fuente2.setSize(9);
+
+            documento.add(img);
+
+            documento.add(new Paragraph("CYAN ARTES GRAFICAS", fuenteNegrita));
+            documento.add(new Paragraph("Javier Mina #74", fuente));
+            documento.add(new Paragraph("Col. Centro C.P 63000", fuente));
+            documento.add(new Paragraph("Tepic Nayarit, Mexico\n", fuente));
+            //documento.add(new Paragraph("Celular 311-111-5133\n", fuente));
+            documento.add(new Paragraph("Email: admon.cyan@gmail.com\n", fuente));
+
+            documento.add(new Paragraph("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------", fuente));
+            documento.add(new Paragraph("              " + comen, fuente));
+            documento.add(new Paragraph("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------", fuente));
+
+            documento.add(new Paragraph("\n"));
+
+            if (tipo.equals("Individual")) {
+                
+                documento.add(tablaTotal(total));
+                documento.add(new Paragraph("\n"));
+                
+                PdfPTable tabla = crearTablaReporteComision(articulos, "", "", "", documento.getPageSize().getWidth() / 2 - 40);
+                documento.add(tabla);
+            } else {
+
+                documento.add(new Paragraph("Lista General"));
+                documento.add(new Paragraph("\n"));
+                PdfPTable tabla2 = crearTablaReporteComision2(articulos2, "", "", "", documento.getPageSize().getWidth() / 2 - 40);
+                documento.add(tabla2);
+
+                documento.add(new Paragraph("\n"));
+                documento.add(new Paragraph("Lista Detallada"));
+                documento.add(new Paragraph("\n"));
+
+                PdfPTable tabla = crearTablaReporteComision(articulos, "", "", "", documento.getPageSize().getWidth() / 2 - 40);
+                documento.add(tabla);
+
+            }
+
+            documento.close();
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+
+    }
+    
+     public PdfPTable tablaTotal(String total)  {
+        Font fuente2 = new Font();
+        fuente2.setSize(9);
+        Font fuente3 = new Font();
+        fuente3.setSize(9);
+        fuente3.setStyle(Font.BOLD);
+
+        PdfPTable table = new PdfPTable(2);
+        table.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+
+        table.getDefaultCell().setBackgroundColor(GrayColor.WHITE);
+        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+       // table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+        table.setWidthPercentage(100);
+
+        table.addCell(new Paragraph("Total de Comisiones", fuente3));
+        table.addCell(new Paragraph(total, fuente3));
+
+        return table;
+    }
+
     public void pdfCorteCaja(String nombreArchivo, Object[][] articulos, Object[][] articulos2, Object[][] articulos3, Object[][] articulos4, String fecha, String total, String usuario,
             String eC, String tC, String cC, String sE, String sT, String sC,
             String sacadoCaja, String sacadoTarjeta, String sacadoCheque,
@@ -211,8 +299,8 @@ public class ArchivoPDF {
         try {
             Document documento = new Document(PageSize.LETTER);
             Image img = Image.getInstance("cyanlogo.png");
-
-            FileOutputStream ficheroPdf = new FileOutputStream("C:\\Users\\pixel\\Documents\\Documentos Sistema\\Cortes\\" + nombreArchivo + ".pdf");
+//"C:\\Users\\pixel\\Documents\\Documentos Sistema\\Cortes\\" +
+            FileOutputStream ficheroPdf = new FileOutputStream( nombreArchivo + ".pdf");
             PdfWriter.getInstance(documento, ficheroPdf).setInitialLeading(20);
 
             documento.open();
@@ -339,8 +427,8 @@ public class ArchivoPDF {
         Paragraph colum2 = new Paragraph("Impuestos", fuente);
         Paragraph colum3 = new Paragraph("Descuento", fuente);
         Paragraph colum4 = new Paragraph("Total", fuente);
-        Paragraph colum5 = new Paragraph("Pago/Abono $ "+efectivo, fuente);
-        Paragraph colum6 = new Paragraph("Cambio/Restante $ "+cambio, fuente);
+        Paragraph colum5 = new Paragraph("Pago/Abono $ " + efectivo, fuente);
+        Paragraph colum6 = new Paragraph("Cambio/Restante $ " + cambio, fuente);
 
         Paragraph colum1_2 = new Paragraph(simp + "", fuente);
         Paragraph colum2_2 = new Paragraph(impuestos + "", fuente);
@@ -390,13 +478,13 @@ public class ArchivoPDF {
         table.addCell("");
         table.addCell("");
         table.addCell("");
-        
+
         table.addCell("");
         table.addCell(colum6);
         table.addCell("");
         table.addCell("");
         table.addCell("");
-        
+
         return table;
     }
 
@@ -591,6 +679,137 @@ public class ArchivoPDF {
         table.addCell("");
         table.addCell(colum1);
         table.addCell(colum1_2 + "");
+
+        return table;
+    }
+
+    private PdfPTable crearTablaReporteComision(Object[][] articulos, String simp, String impuestos, String total, float width) throws DocumentException {
+
+        PdfPTable table = new PdfPTable(7);
+        table.setHorizontalAlignment(Element.ALIGN_CENTER);
+        float[] medidaCeldas = {7f, 60.80f, 40.60f, 30.60f, 25.60f, 25.60f, 25.60f};
+        table.setWidths(medidaCeldas);
+        table.getDefaultCell().setBackgroundColor(new GrayColor(0.75f));
+
+        Paragraph columna1 = new Paragraph("#");
+        Paragraph columna2 = new Paragraph("Cliente");
+        Paragraph columna3 = new Paragraph("Concepto");
+        Paragraph columna4 = new Paragraph("Fecha");
+        Paragraph columna5 = new Paragraph("Total");
+        Paragraph columna6 = new Paragraph("Comision");
+        Paragraph columna7 = new Paragraph("Usuario");
+
+        columna1.getFont().setStyle(Font.BOLD);
+        columna1.getFont().setSize(9);
+
+        columna2.getFont().setStyle(Font.BOLD);
+        columna2.getFont().setSize(9);
+
+        columna3.getFont().setStyle(Font.BOLD);
+        columna3.getFont().setSize(9);
+
+        columna4.getFont().setStyle(Font.BOLD);
+        columna4.getFont().setSize(9);
+
+        columna5.getFont().setStyle(Font.BOLD);
+        columna5.getFont().setSize(9);
+
+        columna6.getFont().setStyle(Font.BOLD);
+        columna6.getFont().setSize(9);
+
+        columna7.getFont().setStyle(Font.BOLD);
+        columna7.getFont().setSize(9);
+
+        Font fuente = new Font();
+        fuente.setSize(9);
+
+        table.addCell(columna1);
+        table.addCell(columna2);
+        table.addCell(columna3);
+        table.addCell(columna4);
+        table.addCell(columna5);
+        table.addCell(columna6);
+        table.addCell(columna7);
+
+        table.setHeaderRows(1);
+        table.getDefaultCell().setBackgroundColor(GrayColor.GRAYWHITE);
+        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_LEFT);
+        table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+        table.setWidthPercentage(100);
+
+        for (int counter = 0; counter < articulos.length; counter++) {
+
+            Paragraph col1 = new Paragraph(articulos[counter][0] + "", fuente);
+            table.addCell(col1);
+            Paragraph col2 = new Paragraph(articulos[counter][1] + "", fuente);
+            table.addCell(col2);
+            Paragraph col3 = new Paragraph(articulos[counter][2] + "", fuente);
+            table.addCell(col3);
+            Paragraph col4 = new Paragraph(articulos[counter][3] + "", fuente);
+            table.addCell(col4);
+            Paragraph col5 = new Paragraph(articulos[counter][4] + "", fuente);
+            table.addCell(col5);
+            Paragraph col6 = new Paragraph(articulos[counter][5] + "", fuente);
+            table.addCell(col6);
+            Paragraph col7 = new Paragraph(articulos[counter][6] + "", fuente);
+            table.addCell(col7);
+        }
+
+        /*  Paragraph colum1 = new Paragraph("Total", fuente);
+        Paragraph colum1_2 = new Paragraph(total + "", fuente);
+
+        table.addCell("");
+        table.addCell("");
+        table.addCell("");
+        table.addCell("");
+        table.addCell("");
+        table.addCell("");
+
+        table.addCell("");
+        table.addCell("");
+        table.addCell("");
+        table.addCell("");
+        table.addCell(colum1);
+        table.addCell(colum1_2 + "");*/
+        return table;
+    }
+
+    private PdfPTable crearTablaReporteComision2(Object[][] articulos, String simp, String impuestos, String total, float width) throws DocumentException {
+
+        PdfPTable table = new PdfPTable(2);
+        table.setHorizontalAlignment(Element.ALIGN_CENTER);
+        // float[] medidaCeldas = {7f, 60.80f};
+        // table.setWidths(medidaCeldas);
+        table.getDefaultCell().setBackgroundColor(new GrayColor(0.75f));
+
+        Paragraph columna1 = new Paragraph("Usuario");
+        Paragraph columna2 = new Paragraph("Total Comisiones");
+
+        columna1.getFont().setStyle(Font.BOLD);
+        columna1.getFont().setSize(9);
+
+        columna2.getFont().setStyle(Font.BOLD);
+        columna2.getFont().setSize(9);
+
+        Font fuente = new Font();
+        fuente.setSize(9);
+
+        table.addCell(columna1);
+        table.addCell(columna2);
+        table.setHeaderRows(1);
+        table.getDefaultCell().setBackgroundColor(GrayColor.GRAYWHITE);
+        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_LEFT);
+        table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+        table.setWidthPercentage(100);
+
+        for (int counter = 0; counter < articulos.length; counter++) {
+
+            Paragraph col1 = new Paragraph(articulos[counter][0] + "", fuente);
+            table.addCell(col1);
+            Paragraph col2 = new Paragraph(articulos[counter][1] + "", fuente);
+            table.addCell(col2);
+
+        }
 
         return table;
     }

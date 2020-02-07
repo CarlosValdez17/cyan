@@ -600,7 +600,7 @@ try{
             Double totalEfectivo = Double.parseDouble(sumEfec.getText()) + Double.parseDouble(labelGastos.getText());
 
             String tic =
-                      "           PIXELARTE\n"
+                      "             CYAN\n"
                     + "================================\n"
                     + "    **** CORTE DE CAJA ***\n"
                     + "FECHA: " + fechaTicket + "  " + horaTicket + "\n"
@@ -651,7 +651,8 @@ try{
 
             try {
                 Desktop desktop = Desktop.getDesktop();
-                desktop.open(new java.io.File("C:\\Users\\pixel\\Documents\\Documentos Sistema\\Cortes\\" + nombre + ".pdf"));
+                //"C:\\Users\\pixel\\Documents\\Documentos Sistema\\Cortes\\" + 
+                desktop.open(new java.io.File(nombre + ".pdf"));
 
             }
             catch (Exception ex) {

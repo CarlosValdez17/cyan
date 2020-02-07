@@ -282,8 +282,13 @@ public class ventanaPrincipal extends javax.swing.JFrame {
 
     public void cargarComisiones() {
         limpiar(tablaComisiones);
+        limpiar(tablaComisiones2
+        );
         DefaultTableModel modelo = (DefaultTableModel) tablaComisiones.getModel();
+        DefaultTableModel modelo2 = (DefaultTableModel) tablaComisiones2.getModel();
+
         u.tablaComisiones(modelo, "");
+        u.tablaComisiones2(modelo2, "");
     }
 
     public void cargarReportes(String tipo, String where2) {
@@ -428,8 +433,8 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         }
         txtTotal.setText(df.format(total));
     }
-    
-     public void sumaComisiones() {
+
+    public void sumaComisiones() {
         DefaultTableModel modelo = (DefaultTableModel) tablaComisiones.getModel();
 
         float total = 0;
@@ -1008,12 +1013,19 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         jLabel72 = new javax.swing.JLabel();
         jButton64 = new javax.swing.JButton();
         jButton65 = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        jSeparator3 = new javax.swing.JSeparator();
         jPanel27 = new javax.swing.JPanel();
         jScrollPane12 = new javax.swing.JScrollPane();
         tablaComisiones = new javax.swing.JTable();
-        jButton61 = new javax.swing.JButton();
         jLabel73 = new javax.swing.JLabel();
         labelTotalComisiones = new javax.swing.JLabel();
+        jScrollPane14 = new javax.swing.JScrollPane();
+        tablaComisiones2 = new javax.swing.JTable();
+        jLabel74 = new javax.swing.JLabel();
+        jLabel75 = new javax.swing.JLabel();
+        jButton63 = new javax.swing.JButton();
         jLabel63 = new javax.swing.JLabel();
         jPanel19 = new javax.swing.JPanel();
         labelUsuarioLog = new javax.swing.JLabel();
@@ -3720,6 +3732,12 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
         javax.swing.GroupLayout jPanel26Layout = new javax.swing.GroupLayout(jPanel26);
         jPanel26.setLayout(jPanel26Layout);
         jPanel26Layout.setHorizontalGroup(
@@ -3729,24 +3747,31 @@ public class ventanaPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel25)
                     .addComponent(comboEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel72)
                     .addGroup(jPanel26Layout.createSequentialGroup()
                         .addComponent(fechaComision, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton65)))
-                .addGap(56, 56, 56)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel70)
                     .addComponent(fechaComision2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel71)
-                    .addComponent(fechaComision3, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addComponent(jButton64)
-                .addContainerGap())
+                    .addGroup(jPanel26Layout.createSequentialGroup()
+                        .addComponent(fechaComision3, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton64)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51))
         );
         jPanel26Layout.setVerticalGroup(
             jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3758,12 +3783,10 @@ public class ventanaPrincipal extends javax.swing.JFrame {
                         .addComponent(fechaComision3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton64)
                     .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel26Layout.createSequentialGroup()
-                                .addComponent(jLabel72)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fechaComision, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton65, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGroup(jPanel26Layout.createSequentialGroup()
+                            .addComponent(jLabel72)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(fechaComision, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel26Layout.createSequentialGroup()
                             .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel25)
@@ -3771,8 +3794,15 @@ public class ventanaPrincipal extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(comboEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(fechaComision2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(fechaComision2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton65, javax.swing.GroupLayout.Alignment.TRAILING)))
                 .addGap(0, 20, Short.MAX_VALUE))
+            .addGroup(jPanel26Layout.createSequentialGroup()
+                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1)
+                    .addComponent(jSeparator2)
+                    .addComponent(jSeparator3))
+                .addContainerGap())
         );
 
         jPanel27.setOpaque(false);
@@ -3786,7 +3816,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -3794,13 +3824,59 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             }
         });
         jScrollPane12.setViewportView(tablaComisiones);
-
-        jButton61.setText("jButton61");
+        if (tablaComisiones.getColumnModel().getColumnCount() > 0) {
+            tablaComisiones.getColumnModel().getColumn(0).setMinWidth(80);
+            tablaComisiones.getColumnModel().getColumn(0).setPreferredWidth(80);
+            tablaComisiones.getColumnModel().getColumn(0).setMaxWidth(80);
+            tablaComisiones.getColumnModel().getColumn(3).setMinWidth(80);
+            tablaComisiones.getColumnModel().getColumn(3).setPreferredWidth(80);
+            tablaComisiones.getColumnModel().getColumn(3).setMaxWidth(80);
+            tablaComisiones.getColumnModel().getColumn(4).setMinWidth(80);
+            tablaComisiones.getColumnModel().getColumn(4).setPreferredWidth(80);
+            tablaComisiones.getColumnModel().getColumn(4).setMaxWidth(80);
+            tablaComisiones.getColumnModel().getColumn(5).setMinWidth(80);
+            tablaComisiones.getColumnModel().getColumn(5).setPreferredWidth(80);
+            tablaComisiones.getColumnModel().getColumn(5).setMaxWidth(80);
+        }
 
         jLabel73.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel73.setText("Total Comisiones");
 
         labelTotalComisiones.setText("-");
+
+        tablaComisiones2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Usuario", "Comisiones"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane14.setViewportView(tablaComisiones2);
+        if (tablaComisiones2.getColumnModel().getColumnCount() > 0) {
+            tablaComisiones2.getColumnModel().getColumn(0).setMinWidth(80);
+            tablaComisiones2.getColumnModel().getColumn(0).setPreferredWidth(80);
+            tablaComisiones2.getColumnModel().getColumn(0).setMaxWidth(80);
+        }
+
+        jLabel74.setText("Comisiones Especificas");
+
+        jLabel75.setText("Comisiones Generales");
+
+        jButton63.setText("Generar PDF");
+        jButton63.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton63ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel27Layout = new javax.swing.GroupLayout(jPanel27);
         jPanel27.setLayout(jPanel27Layout);
@@ -3809,48 +3885,63 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel27Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane12)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel27Layout.createSequentialGroup()
+                    .addGroup(jPanel27Layout.createSequentialGroup()
+                        .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel27Layout.createSequentialGroup()
+                                .addComponent(jLabel74)
+                                .addGap(0, 630, Short.MAX_VALUE))
+                            .addComponent(jScrollPane12))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel75)
+                            .addComponent(jScrollPane14, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel27Layout.createSequentialGroup()
                         .addComponent(jLabel73)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(labelTotalComisiones)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton61)))
+                        .addComponent(jButton63)))
                 .addContainerGap())
         );
         jPanel27Layout.setVerticalGroup(
             jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel27Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel74)
+                    .addComponent(jLabel75))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton61)
-                    .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel73)
-                        .addComponent(labelTotalComisiones)))
-                .addContainerGap())
+                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                    .addComponent(jScrollPane14, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel73)
+                    .addComponent(labelTotalComisiones)
+                    .addComponent(jButton63))
+                .addGap(26, 26, 26))
         );
 
         javax.swing.GroupLayout panelComisionesLayout = new javax.swing.GroupLayout(panelComisiones);
         panelComisiones.setLayout(panelComisionesLayout);
         panelComisionesLayout.setHorizontalGroup(
             panelComisionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelComisionesLayout.createSequentialGroup()
+            .addGroup(panelComisionesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelComisionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(panelComisionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelComisionesLayout.createSequentialGroup()
+                        .addComponent(jPanel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addComponent(jPanel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         panelComisionesLayout.setVerticalGroup(
             panelComisionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelComisionesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(16, 16, 16))
         );
 
         jPanel1.add(panelComisiones, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1010, 550));
@@ -5163,7 +5254,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
                 modelo.addRow(new Object[]{"0", produ, "-", cantidad, df.format(pu2), df.format(prec)});
                 sumaVenta();
                 //desglozarImpuestosVenta();
-            }
+            }// 
         } catch (Exception e) {
         }
     }//GEN-LAST:event_jButton51ActionPerformed
@@ -5292,6 +5383,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
 
     private void jButton62ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton62ActionPerformed
         // TODO add your handling code here:
+        sumaComisiones();
         prenderBoton(jButton62, panelComisiones);
     }//GEN-LAST:event_jButton62ActionPerformed
 
@@ -5299,43 +5391,97 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         limpiar(tablaComisiones);
         DefaultTableModel modelo = (DefaultTableModel) tablaComisiones.getModel();
-        u.tablaComisiones(modelo, "where v.usuario='" + comboEmpleados.getSelectedItem() + "'");
+        if (comboEmpleados.getSelectedItem().equals("Seleccione..")) {
+            cargarComisiones();
+        } else {
+            u.tablaComisiones(modelo, "where v.usuario='" + comboEmpleados.getSelectedItem() + "'");
+        }
         sumaComisiones();
     }//GEN-LAST:event_comboEmpleadosActionPerformed
 
     private void jButton65ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton65ActionPerformed
         // TODO add your handling code here:
         limpiar(tablaComisiones);
+        limpiar(tablaComisiones2);
+
         DefaultTableModel modelo = (DefaultTableModel) tablaComisiones.getModel();
-        
+        DefaultTableModel modelo2 = (DefaultTableModel) tablaComisiones2.getModel();
+
         String fecha = new SimpleDateFormat("yyyy-MM-dd").format(fechaComision.getDate());
 
         if (comboEmpleados.getSelectedItem().equals("Seleccione..")) {
-            u.tablaComisiones(modelo, "where v.fecha='"+fecha+"'");
-        }else{
-            u.tablaComisiones(modelo, "where v.usuario='" + comboEmpleados.getSelectedItem() + "' and v.fecha='"+fecha+"'");
+            u.tablaComisiones(modelo, "where v.fecha='" + fecha + "'");
+            u.tablaComisiones2(modelo2, "where v.fecha='" + fecha + "'");
+        } else {
+            u.tablaComisiones(modelo, "where v.usuario='" + comboEmpleados.getSelectedItem() + "' and v.fecha='" + fecha + "'");
+            u.tablaComisiones2(modelo2, "where v.fecha='" + fecha + "'");
         }
-        
+
         sumaComisiones();
 
     }//GEN-LAST:event_jButton65ActionPerformed
 
     private void jButton64ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton64ActionPerformed
         // TODO add your handling code here:
-          limpiar(tablaComisiones);
+        limpiar(tablaComisiones);
+        limpiar(tablaComisiones2);
+
         DefaultTableModel modelo = (DefaultTableModel) tablaComisiones.getModel();
-        
+        DefaultTableModel modelo2 = (DefaultTableModel) tablaComisiones2.getModel();
+
         String fecha = new SimpleDateFormat("yyyy-MM-dd").format(fechaComision2.getDate());
         String fecha2 = new SimpleDateFormat("yyyy-MM-dd").format(fechaComision3.getDate());
 
         if (comboEmpleados.getSelectedItem().equals("Seleccione..")) {
-            u.tablaComisiones(modelo, "where v.fecha between '"+fecha+"' and '"+fecha2+"' ");
-        }else{
-            u.tablaComisiones(modelo, "where v.fecha between '"+fecha+"' and '"+fecha2+"' and (v.usuario='" + comboEmpleados.getSelectedItem() + "') ");
+            u.tablaComisiones(modelo, "where v.fecha between '" + fecha + "' and '" + fecha2 + "' ");
+            u.tablaComisiones2(modelo2, "where v.fecha between '" + fecha + "' and '" + fecha2 + "' ");
+        } else {
+            u.tablaComisiones(modelo, "where v.fecha between '" + fecha + "' and '" + fecha2 + "' and (v.usuario='" + comboEmpleados.getSelectedItem() + "') ");
+            u.tablaComisiones2(modelo2, "where v.fecha between '" + fecha + "' and '" + fecha2 + "' ");
         }
 
         sumaComisiones();
     }//GEN-LAST:event_jButton64ActionPerformed
+
+    private void jButton63ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton63ActionPerformed
+        // TODO add your handling code here:
+        ArchivoPDF p = new ArchivoPDF(cn);
+        
+        DefaultTableModel modelo = (DefaultTableModel) tablaComisiones.getModel();
+        Object[][] articulos = obtenerArticulos(modelo);
+        
+        DefaultTableModel modelo2 = (DefaultTableModel) tablaComisiones2.getModel();
+        Object[][] articulos2 = obtenerArticulos(modelo2);
+        
+        String tipo="";
+        if(comboEmpleados.getSelectedItem().equals("Seleccione..")){
+            tipo="General";
+        }else{
+            tipo="Individual";
+        }
+        
+        String archivo = JOptionPane.showInputDialog("Nombre del archivo");
+
+        if (archivo == null || archivo.equals("")) {
+            JOptionPane.showMessageDialog(this, "Para abrir PDF asigna un nombre");
+        } else {
+            try {
+                p.pdfReporteComisionesIndividual(archivo, articulos, articulos2, tipo, "Reporte de Comisiones", labelTotalComisiones.getText());
+            } catch (DocumentException ex) {
+                Logger.getLogger(ventanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(ventanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            Desktop desktop = Desktop.getDesktop();
+            try {
+                desktop.open(new java.io.File(archivo + ".pdf"));
+            } catch (IOException ex) {
+                Logger.getLogger(ventanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_jButton63ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -5454,8 +5600,8 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton59;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton60;
-    private javax.swing.JButton jButton61;
     private javax.swing.JButton jButton62;
+    private javax.swing.JButton jButton63;
     private javax.swing.JButton jButton64;
     private javax.swing.JButton jButton65;
     private javax.swing.JButton jButton7;
@@ -5537,6 +5683,8 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel71;
     private javax.swing.JLabel jLabel72;
     private javax.swing.JLabel jLabel73;
+    private javax.swing.JLabel jLabel74;
+    private javax.swing.JLabel jLabel75;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -5581,6 +5729,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane13;
+    private javax.swing.JScrollPane jScrollPane14;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -5589,6 +5738,9 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTextField jTextField1;
@@ -5631,6 +5783,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextField tTelefono1;
     private javax.swing.JTable tablaClientes;
     private javax.swing.JTable tablaComisiones;
+    private javax.swing.JTable tablaComisiones2;
     private javax.swing.JTable tablaCortes;
     private javax.swing.JTable tablaCupones;
     private javax.swing.JTable tablaFacturas;
